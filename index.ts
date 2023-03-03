@@ -205,14 +205,19 @@ class InputController {
     document.addEventListener(
       'keydown',
       (evt: KeyboardEvent) => {
-        if (evt.key == 'ArrowUp') {
-          this.snake.moveUp();
-        } else if (evt.key == 'ArrowDown') {
-          this.snake.moveDown();
-        } else if (evt.key == 'ArrowLeft') {
-          this.snake.moveLeft();
-        } else if (evt.key == 'ArrowRight') {
-          this.snake.moveRight();
+        switch (evt.key) {
+          case 'ArrowUp':
+            this.snake.moveUp();
+            break;
+          case 'ArrowDown':
+            this.snake.moveDown();
+            break;
+          case 'ArrowLeft':
+            this.snake.moveLeft();
+            break;
+          case 'ArrowRight':
+            this.snake.moveRight();
+            break;
         }
       },
       false
@@ -321,3 +326,11 @@ class Game {
 }
 
 let game = new Game();
+
+/** 
+ TODO
+ - make snake a different color
+ - fix constants names to be COLOR_...
+ - remove magic numbers
+ 
+ */
