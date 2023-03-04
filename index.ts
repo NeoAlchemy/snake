@@ -235,7 +235,6 @@ class Game {
   constructor() {
     //Setup Components
     let inputController = new InputController(this.snake);
-    this.gameObject.push();
     this.id = requestAnimationFrame(this.gameLoop);
   }
 
