@@ -2,5 +2,7 @@
   "name": "snake",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "nipplejs": "^0.10.1"
+  }
 }

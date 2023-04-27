@@ -1,3 +1,5 @@
+import * as nipplejs from 'nipplejs';
+
 // Import stylesheets
 import './style.css';
 
@@ -12,7 +14,7 @@ const SNAKE_STARTING_LENGTH = 5;
 const COLOR_BACKGROUND = '#96C400';
 const COLOR_SCORE = '#2F5300';
 const FOOD_COLOR = '#2F5300';
-const MAX_FRAME_RATE = 5;
+const MAX_FRAME_RATE = 20;
 
 class Util {
   static getRandomInt(min: number, max: number) {
@@ -201,6 +203,24 @@ class InputController {
 
   constructor(snake: Snake) {
     this.snake = snake;
+    var options: any = {
+      position: { top: '90%', left: '50%' },
+      mode: 'static',
+    };
+    var manager = nipplejs.create(options);
+
+    manager.on('dir:down', () => {
+      this.snake.moveDown();
+    });
+    manager.on('dir:up', () => {
+      this.snake.moveUp();
+    });
+    manager.on('dir:left', () => {
+      this.snake.moveLeft();
+    });
+    manager.on('dir:right', () => {
+      this.snake.moveRight();
+    });
 
     document.addEventListener(
       'keydown',
@@ -222,6 +242,48 @@ class InputController {
       },
       false
     );
+
+    /** MOUSE SWIPE **/
+    canvas.addEventListener('touchstart', handleTouchStart, false);
+    canvas.addEventListener('touchmove', handleTouchMove, false);
+
+    let xDown = null;
+    let yDown = null;
+
+    function handleTouchStart(evt) {
+      xDown = evt.originalEvent.touches[0].clientX;
+      yDown = evt.originalEvent.touches[0].clientY;
+    }
+
+    function handleTouchMove(evt) {
+      if (!xDown || !yDown) {
+        return;
+      }
+
+      let xUp = evt.originalEvent.touches[0].clientX;
+      let yUp = evt.originalEvent.touches[0].clientY;
+
+      let xDiff = xDown - xUp;
+      let yDiff = yDown - yUp;
+
+      if (Math.abs(xDiff) > Math.abs(yDiff)) {
+        /*most significant*/
+        if (xDiff > 0) {
+          this.snake.moveLeft();
+        } else {
+          this.snake.moveRight();
+        }
+      } else {
+        if (yDiff > 0) {
+          this.snake.moveUp();
+        } else {
+          this.snake.moveDown();
+        }
+      }
+      /* reset values */
+      xDown = null;
+      yDown = null;
+    }
   }
 }
 
