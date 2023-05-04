@@ -258,7 +258,7 @@ class Snake extends GameObject {
   frameCount: number = 0;
 
   constructor() {
-    super();
+    super(new WASDInputController());
     this.direction = 'RIGHT';
     for (let i = 0; i < SNAKE_STARTING_LENGTH; i++) {
       this.body.push({ x: this.x + i * CELL_SIZE, y: this.y });
@@ -422,13 +422,8 @@ class MainLevel extends Scene {
     this.food = new Food();
     this.add(this.food);
 
-    this.physics.onCollide(
-      this.snake.body[0],
-      this.food,
-      this.onSnakeEatsFood,
-      this
-    );
-    this.physics.onCollideWalls(this.snake.body[0], this.onSnakeHitsWall, this);
+    this.physics.onCollide(this.snake, this.food, this.onSnakeEatsFood, this);
+    this.physics.onCollideWalls(this.snake, this.onSnakeHitsWall, this);
     //snake hits snake????
     //food hits snake??
   }
