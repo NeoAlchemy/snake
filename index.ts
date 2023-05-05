@@ -111,10 +111,10 @@ class Physics {
     }
     for (let wallCollisionEntry of this.wallCollisionRegister) {
       if (
-        wallCollisionEntry.objectA.y < wallCollisionEntry.objectA.height ||
-        wallCollisionEntry.objectA.y > canvas.height ||
-        wallCollisionEntry.objectA.x < wallCollisionEntry.objectA.width ||
-        wallCollisionEntry.objectA.x > canvas.width
+        wallCollisionEntry.objectA.y < 0 ||
+        wallCollisionEntry.objectA.y >= canvas.height ||
+        wallCollisionEntry.objectA.x < 0 ||
+        wallCollisionEntry.objectA.x >= canvas.width
       ) {
         wallCollisionEntry.callback.bind(wallCollisionEntry.scope).apply();
       }
@@ -204,6 +204,8 @@ class Food extends GameObject {
   constructor() {
     super();
     this.setupRandomXY();
+    this.width = CELL_SIZE;
+    this.height = CELL_SIZE;
   }
 
   update() {
@@ -263,6 +265,8 @@ class Snake extends GameObject {
     for (let i = 0; i < SNAKE_STARTING_LENGTH; i++) {
       this.body.push({ x: this.x + i * CELL_SIZE, y: this.y });
     }
+    this.width = CELL_SIZE;
+    this.height = CELL_SIZE;
   }
 
   update() {
@@ -290,6 +294,8 @@ class Snake extends GameObject {
       }
 
       this.body.push(head);
+      this.x = head.x;
+      this.y = head.y;
       this.frameCount = 0;
     }
   }
@@ -430,7 +436,7 @@ class MainLevel extends Scene {
 
   onSnakeHitsWall() {
     console.log('onSnakeHitWall');
-    game = new Game(mainLevel);
+    game = new Game(new MainLevel());
   }
 
   onSnakeEatsFood() {
