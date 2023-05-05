@@ -254,8 +254,6 @@ class Food extends GameObject {
 }
 
 class Snake extends GameObject {
-  x: number = CELL_SIZE * 5;
-  y: number = CELL_SIZE * 2;
   body: Array<any> = [];
   frameCount: number = 0;
 
@@ -263,7 +261,7 @@ class Snake extends GameObject {
     super(new WASDInputController());
     this.direction = 'RIGHT';
     for (let i = 0; i < SNAKE_STARTING_LENGTH; i++) {
-      this.body.push({ x: this.x + i * CELL_SIZE, y: this.y });
+      this.body.push({ x: CELL_SIZE * 5 + i * CELL_SIZE, y: CELL_SIZE * 2 });
     }
     this.width = CELL_SIZE;
     this.height = CELL_SIZE;
@@ -292,10 +290,10 @@ class Snake extends GameObject {
           head.x += CELL_SIZE;
           break;
       }
-
       this.body.push(head);
       this.x = head.x;
       this.y = head.y;
+
       this.frameCount = 0;
     }
   }
@@ -308,7 +306,7 @@ class Snake extends GameObject {
   }
 
   grows() {
-    let x, y;
+    let x: number, y: number;
     let tail = this.body[0];
     switch (this.direction) {
       case 'UP':
@@ -430,7 +428,7 @@ class MainLevel extends Scene {
 
     this.physics.onCollide(this.snake, this.food, this.onSnakeEatsFood, this);
     this.physics.onCollideWalls(this.snake, this.onSnakeHitsWall, this);
-    //snake hits snake????
+
     //food hits snake??
   }
 
@@ -446,8 +444,22 @@ class MainLevel extends Scene {
     this.score.increment();
   }
 
+  onSnakeHitSnake() {
+    for (let i = 0; i < this.snake.body.length - 1; i++) {
+      if (
+        this.snake.body[i].x == this.snake.x &&
+        this.snake.body[i].y == this.snake.y
+      ) {
+        game = new Game(new MainLevel());
+      }
+    }
+  }
+
   update() {
     super.update();
+
+    //collision check for snake hitting snake
+    this.onSnakeHitSnake();
   }
 
   render() {
