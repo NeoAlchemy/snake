@@ -99,22 +99,29 @@ class Physics {
         collisionEntry.objectB.x < canvas.width &&
         collisionEntry.objectB.y > 0 &&
         collisionEntry.objectB.y < canvas.height &&
-        collisionEntry.objectA.x >= collisionEntry.objectB.x &&
-        collisionEntry.objectA.x <=
+        collisionEntry.objectA.x <
           collisionEntry.objectB.x + collisionEntry.objectB.width &&
-        collisionEntry.objectA.y >= collisionEntry.objectB.y &&
-        collisionEntry.objectA.y <=
-          collisionEntry.objectB.y + collisionEntry.objectB.height
+        collisionEntry.objectA.x + collisionEntry.objectA.width >
+          collisionEntry.objectB.x &&
+        collisionEntry.objectA.y <
+          collisionEntry.objectB.y + collisionEntry.objectB.height &&
+        collisionEntry.objectA.y + collisionEntry.objectA.height >
+          collisionEntry.objectB.y
       ) {
-        collisionEntry.callback.bind(collisionEntry.scope).apply();
+        collisionEntry.callback.apply(collisionEntry.scope, [
+          collisionEntry.objectA,
+          collisionEntry.objectB,
+        ]);
       }
     }
     for (let wallCollisionEntry of this.wallCollisionRegister) {
       if (
         wallCollisionEntry.objectA.y < 0 ||
-        wallCollisionEntry.objectA.y >= canvas.height ||
+        wallCollisionEntry.objectA.y + wallCollisionEntry.objectA.height >
+          canvas.height ||
         wallCollisionEntry.objectA.x < 0 ||
-        wallCollisionEntry.objectA.x >= canvas.width
+        wallCollisionEntry.objectA.x + wallCollisionEntry.objectA.width >
+          canvas.width
       ) {
         wallCollisionEntry.callback.bind(wallCollisionEntry.scope).apply();
       }
