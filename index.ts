@@ -480,11 +480,14 @@ class MainLevel extends Scene {
 let mainLevel = new MainLevel();
 let game = new Game(mainLevel);
 
+/**
+BUGS
+- When the food is on the top row it is not eaten 
+*/
+
 /** 
  TODO
  - make snake a different color
  - fix constants names to be COLOR_...
  - remove magic numbers
- - better way to handle gameobjects
- - better way to handle collisions
  */
